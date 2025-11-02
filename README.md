@@ -92,9 +92,9 @@
       4. J Mohit
 
 ## 🧠 Team Info
-      Team Name  : Inventory Management Team  
-      Institute   : [Your Institute Name]  
-      Course      : B.Tech (Computer Science)  
-      Project Year: 2025  
-      Language    : C++
+      Project Name  : Inventory Management Team  
+      Institute     : SRM University AP
+      Course        : B.Tech (Computer Science)  
+      Project Year  : 2025  
+      Language      : C++
 
