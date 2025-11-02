@@ -35,32 +35,50 @@ public:
     }
 
     void recordSale() {
-        ofstream fout("sales.txt", ios::app);
+        const string filename = "sales.txt";
+
+        
+        bool fileExists = false;
+        ifstream fin(filename);
+        if (fin.good()) fileExists = true;
+
+        
+        int sNo = 0;
+        string line;
+        while (getline(fin, line)) {
+            if (line.find('|') != string::npos && 
+                line.find("SNo") == string::npos && 
+                line.find('+') == string::npos)
+                sNo++;
+        }
+        fin.close();
+
+        ofstream fout(filename, ios::app);
         if (!fout.is_open()) {
-            cerr << "Error: Unable to write to sales.txt\n";
+            cerr << "Error: Unable to open " << filename << endl;
             return;
         }
 
-        static bool headerPrinted = false;
-        if (!headerPrinted) {
+        
+        if (!fileExists || sNo == 0) {
             fout << "+-----+-----------------+---------------+---------------------------+-----------+-----------+---------------+---------------------------+\n";
             fout << "| SNo | Customer Name   | Mobile        | Email                     | Prod ID   | Quantity  | Total (Rs)    | Date & Time               |\n";
             fout << "+-----+-----------------+---------------+---------------------------+-----------+-----------+---------------+---------------------------+\n";
-            headerPrinted = true;
         }
 
-        static int sNo = 1;
-        fout << "| " << setw(3) << sNo++ << " | "
-             << setw(15) << left << username.substr(0, 15)
-             << " | " << setw(13) << left << mobile.substr(0, 13)
-             << " | " << setw(25) << left << email.substr(0, 25)
-             << " | " << setw(9) << left << productID
-             << " | " << setw(9) << left << quantity
-             << " | " << setw(13) << left << totalAmount
-             << " | " << setw(25) << left << timeStamp << " |\n";
+        fout << "| " << setw(3) << left << sNo + 1
+            << " | " << setw(15) << left << username.substr(0, 15)
+            << " | " << setw(13) << left << mobile.substr(0, 13)
+            << " | " << setw(25) << left << email.substr(0, 25)
+            << " | " << setw(9) << right << productID
+            << " | " << setw(9) << right << quantity
+            << " | " << setw(13) << right << fixed << setprecision(2) << totalAmount
+            << " | " << setw(25) << left << timeStamp << " |\n";
         fout << "+-----+-----------------+---------------+---------------------------+-----------+-----------+---------------+---------------------------+\n";
+
         fout.close();
     }
+
 };
 
 class Inventory {
